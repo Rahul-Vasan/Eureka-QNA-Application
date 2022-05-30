@@ -6,6 +6,13 @@ Find the schema for each table in the .sql files
 
 # Here is a quick demo of the system
 
+<a href="https://www.youtube.com/watch?v=kKuESN2CIXw" target="_blank"><img src="https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/thumbnail.png" 
+alt="View Demo Here" width="240" height="180" border="10" /></a>
+
+Click on the image to view demo on youtube
+
+
+
 ## Table of Contents
 
 - [ER Diagram](#ER)

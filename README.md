@@ -2,6 +2,8 @@
 
 This project is aimed at building an application that can help people collaborate with each other to help the community in solving critical questions. The main aim of this project is to express my knowledge for applications that use relational database schemas.
 
+Find the schema for each table in the .sql files
+
 # Here is a quick demo of the system
 
 ## Table of Contents

@@ -48,23 +48,59 @@ Incase none of these assumptions make sense right now, nothing to worry, a short
 
 **answers**(answer_id, answer_text,answerer_display_name, question_id, posted_datetime,is_best,is_accepted)
 
-answerer_display_name references users(display_name)
+  answerer_display_name references users(display_name)
 
-question_id references questions(question_id)
+  question_id references questions(question_id)
 
 **votes**(voter_display_name, answer_id, votetype, votedatetime)
 
- voter_display_name references users(display_name)
+  voter_display_name references users(display_name)
 
- answer_id references answers(answer_id)
+  answer_id references answers(answer_id)
 
 **topics**(subtopic_id,subtopic_name,parent_topic_name)
 
 **question_topic_mapping**(subtopic_id,question_id)
 
-question_id references questions(question_id)
+  question_id references questions(question_id)
 
-subtopic_id references topics(subtopic_id)
+  subtopic_id references topics(subtopic_id)
+  
+<a id='description'></a>
+## Description Of The System
+  
+**Modules constituting the overall system**
+  
+1) User signup
+2) User login and logout
+3) User edit profile
+4) Add a new question and tag the questions with relevant topics
+5) View all questions added by me (in a separate window)
+6) View all answers added by me ( in a separate window)
+7) View all questions
+7.1) For each question in the system: add a new answer, edit my answer, delete my answer, upvote any answer, downvote any answer, flag any answer, also undo any of my current votes.
+7.2) For each question added by me: delete question, edit question, add answer,mark answer as best, mark answer as accepted, unmark all of these, mark question as resolved and all the features in 7.1
+8) View my user level
+9) Search for a question or answer based on keywords.
+  
+## Short Description of each module, screenshots and the query associated with it
+  
+ **1) User Signup module:**
+
+The user signs up to the service. The users table stores the unique display_name, passcode, email address and country as they are required fields. So we only ask the users to enter the required fields. The passcodes are MD5 hashed and stored into the database. He may also have a short description about himself stored under about_me of type longtext, and also enter his state and city, and all these can entered after signing up and logging into the system using the edit profile option in the homepage. Only users signed up for the system can access all the modules of the system. Once the credentials entered during signup is verified the user is asked to log in or if there are any errors the user is prompted with what needs to be corrected. A password mismatch, invalid email format are alerted to the user.
+  
+**Screenshot**
+  
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/usersignup.png" width = 700><p>
+  
+**Associated Query**
+  
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/usersignupcode.png" width = 700><p>  
+
+  
+
+  
+  
   
   
   

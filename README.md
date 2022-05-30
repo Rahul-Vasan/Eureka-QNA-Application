@@ -314,7 +314,46 @@ My search query was “How to store data into a database schema” but if had no
 	
 I enabled multiple users to access the system with confined encapsulation using sessions. Sessions are basically used to shared variables throughout the web application and encapsulate with storage for each user. These variables can come handy and relevant when multiple concurrent users are trying to access common variables. Sessioning also enables that we can reuse the data and functionality of a session until the session crashes.
 	
-Everytime an API call is made to a PHP file and data is being passed or fetches we call the session_start() function and store variables such as username, question_id, answerer_name etc which otherwise would need another query into the database.	
+Everytime an API call is made to a PHP file and data is being passed or fetches we call the session_start() function and store variables such as username, question_id, answerer_name etc which otherwise would need another query into the database.
+	
+<a id='security'></a>	
+	
+## Security features:
+
+I have made sure to make use of the **htmlspecialchars()** function https://www.php.net/manual/en/function.htmlspecialchars.php to handle cross site scripting attacks https://owasp.org/www-community/attacks/xss/ and **prepared statements** https://en.wikipedia.org/wiki/Prepared_statement to avoid sql injections https://owasp.org/www-community/attacks/SQL_Injection.
+	
+<a id='challenges'></a>	
+	
+## Challenges Faced:
+	
+1) The main challenge in this project was to handle the limitations of MYSQL full text search, since it does not support indexing on joined tables and also does not support FULL JOINS.
+	
+2) Coming up with a robust algorithm for the search feature. Otherwise its a pretty fun and straightforward application.
+	
+<a id='future'></a>	
+	
+## Future Scope:
+	
+1) I would like to improve the search algorithm even more that can make a comprehensive improvement in semantic identification.
+	
+2) I would also like to improve the frontend with some responsive web technologies incorporated.
+	
+3) I am also looking forward to hosting the website online so that it can get realtime suggestions from the users themselves.
+	
+<a id='contact'></a>
+## Contact Me
+
+  Please feel free to contact me for anything in pertinance to the project. 
+  
+| Contact Method |  |
+| --- | --- |
+| Personal Email | rahulvasan30@gmail.com |
+| School Email |   rs7671@nyu.edu |
+| LinkedIn | https://www.linkedin.com/in/rahul-vasan/ |  	
+	
+	
+	
+	
 	
 	
 	

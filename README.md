@@ -147,7 +147,61 @@ This is also another option provided to logged in user as part of the navigation
   
 **Associated Query**
   
-<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/myanswersquery.png" width = 700><p>  
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/myanswersquery.png" width = 700><p>
+	
+**7) View all questions**
+
+**7.1) For any question in the system:**
+	
+So on the homepage all the questions of the system are added in reverse chronological order.
+
+**Screenshot:**
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/homepage.png" width = 700><p>
+
+A logged in user can view all of these questions. But certain features provided to a user are restricted to only the questions added by him. So for all questions of system the generic ability of the user will be to: 
+
+1) Add a new answer
+2) Vote for any answer
+3) Edit any answer posted by him
+4) Delete any answer posted by him
+5) Undo any of his current votes
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/rahulexample.png" width = 700><p>
+
+So this is a question not posted by ‘rahul’ but he has given 2 answers for it. So he will be able to delete all his answers using the delete key and edit his answer using the text area. Also he will able to like dislike or flag any answer from any question but cannot vote 2 different things like like and dislike or dislike and flag for each answer. For each answer there can be only one vote from a particular user. By clicking the same vote again the vote will be removed for that answer ( toggle kind of). And for each question a text area appears at the bottom which can used to add a new answer.
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/rahulexample2.png" width = 700><p>
+	
+**7.2) For each question asked by the user, the user gets to have extra features such as:**
+
+1) Edit the question title and body
+2) Delete the question
+3) Mark the question as resolved
+4) Choose a best answer and any number of accepted answers
+	
+These are additional features to what discussed in the previous section(7.1)
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/rahulexample3.png" width = 700><p>
+	
+This is one question asked by ‘rahul’ and he gets the option to edit, delete and mark the question resolved. Additionally he also get to choose the best answer and all accepted answers.
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/rahulexample4.png" width = 700><p>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
   
   
   

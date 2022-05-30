@@ -78,8 +78,11 @@ Incase none of these assumptions make sense right now, nothing to worry, a short
 5) View all questions added by me (in a separate window)
 6) View all answers added by me ( in a separate window)
 7) View all questions
-7.1) For each question in the system: add a new answer, edit my answer, delete my answer, upvote any answer, downvote any answer, flag any answer, also undo any of my current votes.
-7.2) For each question added by me: delete question, edit question, add answer,mark answer as best, mark answer as accepted, unmark all of these, mark question as resolved and all the features in 7.1
+
+   7.1) For each question in the system: add a new answer, edit my answer, delete my answer, upvote any answer, downvote any answer, flag any answer, also undo any of my current votes.
+	
+   7.2) For each question added by me: delete question, edit question, add answer,mark answer as best, mark answer as accepted, unmark all of these, mark question as resolved and all the features in 7.1
+	
 8) View my user level
 9) Search for a question or answer based on keywords.
   
@@ -186,7 +189,161 @@ These are additional features to what discussed in the previous section(7.1)
 	
 This is one question asked by ‘rahul’ and he gets the option to edit, delete and mark the question resolved. Additionally he also get to choose the best answer and all accepted answers.
 	
-<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/rahulexample4.png" width = 700><p>	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/rahulexample4.png" width = 700><p>
+	
+<a id='points'></a>
+	
+## Points System
+	
+For each question asked, for each answer given, for each answer given by me that is accepted or marked as best and for each upvote,downvote and flaggedvote that my answer received my overall points maintained in the users table increases or decreases. And each user’s user_level is mostly based on points and few other special criterias.
+
+**Design:**
+
+**User_level calculation:**
+
+|     | Bronze | Silver | Gold |
+| --- | --- | --- | --- |
+| Points | 0 - 60 | 60 - 154 | >=155
+| No of flagged answers by the user | No restriction | <4 | <2
+	
+**Points calculations:**
+	
+| Each Best Answer | Each Accepted Answer | Each Upvote | Each Downvote | Each Question | Each Answer | Each Flagged Answer
+| --- | --- | --- | --- | --- | --- | --- |
+| +10 | +5 | +2 | -0.5 | +1 | +1 | -1
+	
+**Explanation for this approach:**
+	
+Any new user by default belongs to bronze and starts with 0 points.
+As he answers each question he gets a point, and similarly if he posts a new question he gets a point.
+For each “best answer” he gets 10 points, for each accepted answer he gets 5 points (I don't add points for a best answer as points for best answer + points for accepted answer, because its trivial that a best is obviously accepted, and we treat best answers and accepted answers separately)
+For each upvote his answer gets, he gets a +2, for each downvote he gets a -0.5.
+Additionally, an answer can be flagged by other users ( which is also a type of vote just like upvote and downvote), just to make sure that the system is free from inappropriate or abusive stuff. For each flagged vote to an answer he gets a -1.
+	
+**Algorithm for coming up with the thresholds for each user_level:**
+
+**Silver:**
+
+I assume that a silver user should have at least 2 best answers, 2*10 = 20
+I also assume that a silver user should have at least 3 accepted answers, 3*5 = 15
+I also assume that a silver user should have atleast 5 upvotes , 5*2 = 10
+I also assume that a silver user should have atleast posted 15 answers 15*1= 15
+
+Which totals up to 60.
+
+But to check this “at least condition” for each insert into questions, answers, votes through a trigger would involve too many joins and aggregations, which can be costly because these are 3 tables that take in most of the inserts of the system.  So that is why we wanted to move to the points system. Each insert, delete or update into questions, answers and votes will just correspond to an update into the user table updating the points. When the points are updated the triggers starts to do its job of checking the appropriate user_level for the user.
+
+So my minimum expectation is that he gets 60 points to become a silver user, I don't mind him having just 6 answers and each being the best to reach silver, or just 12 accepted answers overall to reach silver, or even 30 upvotes for a single answer to reach silver ( because quality matters more than quantity in our system) or just 60 answers or questions with none of them being accepted or best to encourage the hard work put in.
+
+Additionally we only allow a maximum of 3 flagged answers per silver user, if at all he had 4 flagged answers while he reached 60 points, he will still be a bronze user and he will never get to become a silver user unless someone deletes their flag for his answer.
+
+
+**Gold:**
+
+I assume that a gold user should have at least 5 best answers, 5*10 = 50
+I also assume that a gold user should have at least 9 accepted answers, 9*5 = 45
+I also assume that a gold user should have at least 15 upvotes ,15*2 = 30
+I also assume that a gold user should have atleast posted 30 answers 30*1= 30
+I also assume that a gold user should have atleast posted 2 questions = 2*1 = 2
+
+This sums up to 157 where the 2 points from questions side is mandatory and the remaining 155 points can be achieved in any way using both questions and answers, so its enough to check if a users points is greater than or equal to 155 and check if he has posted at least 2 questions.
+
+Additionally a gold user cannot have more than 1 flagged answer overall, and for each downvote 0.5 points will be reduced. Points incrementing and decrementingon the users table is done in PHP itself after each insert, update or delete to the questions, answers or votes. 
+	
+But the userlevel is calculated using a trigger in MYSQL.
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/pointstrigger.png" width = 700><p>
+	
+**8) View my user level**
+
+Each user is by default a bronze user when he signs in onto the system. Using the predefined set of criteria for granting points given below, the user_level is silver/gold. User can view his user_level  on the homepage.
+	
+The user level is displayed on the top left of the navigation bar
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/homepagetop.png" width = 700><p>
+	
+**9) Search for a question or answer based on keywords**
+	
+User can also Search for a question or answer from all the pages.
+	
+**Screenshot:**
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/search.png" width = 700><p>
+	
+<a id='search'></a>
+	
+## Customized Search Algorithm
+	
+I have used the full text search feature of mysql which creates a full text index on the columns specified from a particular table and matches the given query text against these columns and returns the results sorted by most relevant to least relevance, it uses the cosine distance to do this and is far more accurate when compared to like or contains in a full text search scenario. But the problem with full text indexes is that in mysql it cannot be created on a joined table and if i want to find matches based on both questions and answers then we cannot join questions and answers table to do this. Creating a separate table containing all questions and its corresponding answers would blow up space and can be extremely redundant. So we went for the approach where we full text search on both questions and answers separately. There will be 2 resultant tables containing the search results from both questions and answers along with their question_id in question_results and answer_id, question_id in answers_results.
+	
+For example: Let me search for this text “How to store data into a database schema” in questions
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/search1.png" width = 700><p>
+	
+This would be the result, ques_relevance shows how relevant the results are and I rank them based on it using the windows functions. The most relevant gets the “LARGEST” rank. For example rank 3 is the most relevant question in a result of 3 rows. Lets call this question_result
+
+Similarly we ll get a table for answers also
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/search2.png" width = 700><p>	
+	
+Lets call this answer_results.
+
+So I did a FULL OUTER JOIN on both tables using question_id so that questions with no answers in the answer_results and answers with no corresponding questions in the question_results will be retained.
+
+Now we have individual relevances separately for questions and answers joined together. Next we need to combine them together. But I want to give a larger weightage to a question than an answer, because there can always be an answer containing relevant text belonging to a different topic while its question being entirely different and irrelevant. Since users mostly put their search queries in the “question tone” or with semantics more close to questions, I wanted relevant questions to dominate the results while “not” discarding the array of relevant answers.
+
+So we find the total_relevance = question_relevance + 0.1 * answer_relevance
+
+Finally since each question can have multiple answers we group by question_id and sum the total_relevance and order by summed_total_relevance desc.
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/search3.png" width = 700><p>
+	
+This is the final result ordered by overall_ranking. And this is were the penalization of answer relevance comes in handy.
+
+My search query was “How to store data into a database schema” but if had not penalized the answer_relevance question id 56 would have been the top result of this search and its question is based on how to store the images of 5 cats(Nothing related to databases). Just because one its answers has 10 “database” keyword repeated, it would have become the top result. This will not happen when the search query has quite a good amount of keywords in it. But for small search strings this problem could occur and penalization of answer_relevance can increase the accuracy drastically.
+	
+**Screenshot:**
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/search4.png" width = 700><p>
+	
+**Search Results Page:**
+	
+<p align="center"><img src = "https://github.com/Rahul-Vasan/Eureka-QNA-Application/blob/main/img/search5.png" width = 700><p>	
+	
+**Sessions:**
+	
+I enabled multiple users to access the system with confined encapsulation using sessions. Sessions are basically used to shared variables throughout the web application and encapsulate with storage for each user. These variables can come handy and relevant when multiple concurrent users are trying to access common variables. Sessioning also enables that we can reuse the data and functionality of a session until the session crashes.
+	
+Everytime an API call is made to a PHP file and data is being passed or fetches we call the session_start() function and store variables such as username, question_id, answerer_name etc which otherwise would need another query into the database.	
+	
+	
+	
+	
+
+
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
